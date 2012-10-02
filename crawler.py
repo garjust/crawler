@@ -1,11 +1,9 @@
-import requests
+import httplib2
 import re
 
-start_url = ["http://news.google.com"]
-
-
-import httplib2
 from BeautifulSoup import BeautifulSoup, SoupStrainer
+
+start_url = ["http://news.google.com"]
 
 visited_links = {}
 
