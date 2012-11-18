@@ -1,7 +1,6 @@
 from BeautifulSoup import BeautifulSoup, SoupStrainer
 import re
 import requests
-import sys
 
 
 def recursively_crawl(url, stop_after=None):
@@ -16,7 +15,7 @@ def recursively_crawl(url, stop_after=None):
     if stop_after:
         crawler.exit_function = lambda: len(link_tracker.visited_links) > stop_after 
     crawler.crawl('http://news.google.com')
-    return link_tracker
+    return link_tracker.get_visited(), request_handler.failed_requests
 
 
 class DictionaryLinkTracker(object):
@@ -36,9 +35,8 @@ class DictionaryLinkTracker(object):
     def visit(self, url):
         self.visited_links[url] = 1
 
-    def dump(self, handle):
-        for link, count in self.visited_links.items():
-            handle.write("%s\t%s\n" % (count, link))
+    def get_visited(self):
+        return [(link, count) for link, count in self.visited_links.items()]
 
 
 class RequestHandler(object):
@@ -126,4 +124,8 @@ class ConcurrentBug(BaseBug):
         return self._filter_links(raw_links)
 
 if __name__ == '__main__':
-    recursively_crawl('http://news.google.com', stop_after=20).dump(sys.__stdout__)
+    visited, failed = recursively_crawl('http://news.google.com', stop_after=20)
+    for link, count in visited:
+        print "%s\t%s" % (count, link)
+    for link, exception in failed:
+        print "\nFAILURE: %s\nMESSAGE: %s" % (link, exception)
