@@ -1,10 +1,8 @@
-crawler
-=======
+# crawler
 
 Just messing around with web crawling
 
-The actual module crawler.py
-----------------------------
+## The actual module crawler.py
 
 ### Functions
 
