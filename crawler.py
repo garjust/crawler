@@ -13,7 +13,7 @@ def recursively_crawl(url, stop_after=None):
     request_handler = RequestHandler()
     crawler = RecursiveBug(link_tracker, request_handler)
     if stop_after:
-        crawler.exit_function = lambda: len(link_tracker.visited_links) > stop_after 
+        crawler.exit_function = lambda: len(link_tracker.visited_links) > stop_after
     crawler.crawl('http://news.google.com')
     return link_tracker.get_visited(), request_handler.failed_requests
 
